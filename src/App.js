@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import InputForm from "./inputForm";
+import List from "./list";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      list : [],
+      pendingItem: ""
+    };
+  }
+
+
+handleItemInput = e => {
+  this.setState({
+    pendingItem: e.target.value
+  })
 }
+
+newItemSubmitHandler = e => {
+  e.preventDefault();
+  this.setState({
+    list: [
+      {
+        name: this.state.pendingItem,
+      },
+      ...this.state.list
+    ],
+    pendingItem: ""
+  });
+};
+
+  render(){
+    return (
+      <div className="App-header">
+        <List list={this.state.list} />
+
+        <InputForm
+          className="input"
+          type="text"
+          handleItemInput={this.handleItemInput}
+          newItemSubmitHandler={this.newItemSubmitHandler}
+          pendingItem={this.state.pendingItem}
+          placeholder="Add an item"
+        />
+
+      </div>
+    );
+  }
+}
+
 
 export default App;
